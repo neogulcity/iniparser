@@ -35,7 +35,7 @@ endif ()
 add_library(
     ${PROJECT_NAME}
     STATIC
-    ${srcPath}/main.cpp
+    ${srcPath}/iniparser.cpp
     ${srcPath}/Utility.cpp
 )
 
@@ -44,6 +44,14 @@ target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
 	spdlog::spdlog_header_only
+)
+
+# Compile options.
+target_compile_options(
+    ${PROJECT_NAME}
+    PRIVATE
+    -Wall
+    -Werror
 )
 
 # Set start project for Visual Studio.
