@@ -32,8 +32,9 @@ else ()
 endif ()
 
 # Make library file.
-add_executable(
+add_library(
     ${PROJECT_NAME}
+    STATIC
     ${srcPath}/main.cpp
     ${srcPath}/Utility.cpp
 )
