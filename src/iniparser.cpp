@@ -52,7 +52,7 @@ namespace ini
 
             file.close();
         } else {
-            spdlog::warn("Failed to open file.");
+            spdlog::warn("[iniparser]: Failed to open file.");
         }
 
         return result;
