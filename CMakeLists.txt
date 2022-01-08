@@ -35,7 +35,8 @@ endif ()
 add_library(
     ${PROJECT_NAME}
     STATIC
-    ${srcPath}/iniparser.cpp
+    ${srcPath}/iniparser/iniparser.cpp
+    ${srcPath}/iniparser/Utility.cpp
 )
 
 # Set library include directories
