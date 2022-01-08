@@ -69,15 +69,5 @@ namespace ini
 
 int main()
 {
-    if (Utility::IsDebug()) {
-        spdlog::set_level(spdlog::level::debug);
-        spdlog::debug("Program is launched in debug.");
-    }
-
-    ini::ini abc("test.ini");
-    auto bUse = abc.get("[Settings]", "bUse", "true");
-
-    spdlog::debug("bUse : {}", bUse);
-
     return 0;
 }
