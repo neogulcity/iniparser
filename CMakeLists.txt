@@ -10,7 +10,7 @@ project(
 )
 
 # Set variable 'srcPath' to ./src
-set(srcPath ${CMAKE_SOURCE_DIR}/src)
+set(srcPath ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Find spdlog.
 find_package(spdlog CONFIG REQUIRED)
@@ -36,7 +36,13 @@ add_library(
     ${PROJECT_NAME}
     STATIC
     ${srcPath}/iniparser.cpp
-    ${srcPath}/Utility.cpp
+)
+
+# Set library include directories
+target_include_directories(
+    ${PROJECT_NAME}
+    PUBLIC
+    ${srcPath}
 )
 
 # Link spdlog.
