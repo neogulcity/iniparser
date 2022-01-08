@@ -1,0 +1,2 @@
+# iniparser
+Basic ini parser.
