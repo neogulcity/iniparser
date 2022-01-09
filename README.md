@@ -17,3 +17,24 @@ cmake -B build -S .
 cd build
 cmake --install .
 ```
+
+## Example
+```ini
+# example.ini
+[Section]
+variable = Hello World! # example comment.
+```
+
+```cpp
+// example.cpp
+#include <iostream>
+#include "iniparser/iniparser.h"
+
+int main()
+{
+    ini::ini ifile("example.ini");
+    std::string istring = ifile.get("[Section]", "variable", "null");
+    std::cout << istring << std::endl;
+    return 0;
+}
+```
