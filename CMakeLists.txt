@@ -9,6 +9,14 @@ project(
     LANGUAGES CXX
 )
 
+# Cache variables
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
+# C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 # Set variable 'srcPath' to ./src
 set(srcPath ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -35,14 +43,14 @@ endif ()
 add_library(
     ${PROJECT_NAME}
     STATIC
-    ${srcPath}/iniparser/iniparser.cpp
-    ${srcPath}/iniparser/Utility.cpp
+    ${srcPath}/iniparser.cpp
+    ${srcPath}/Utility.cpp
 )
 
 # Set library include directories
 target_include_directories(
     ${PROJECT_NAME}
-    PUBLIC
+    PRIVATE
     ${srcPath}
 )
 
@@ -65,3 +73,59 @@ target_compile_options(
 if (MSVC)
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 endif ()
+
+# Making package
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/iniparserConfig.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/iniparser
+)
+
+target_include_directories(iniparser
+    PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+)
+
+set_property(TARGET iniparser PROPERTY VERSION ${PROJECT_VERSION})
+set_property(TARGET iniparser PROPERTY SOVERSION 3)
+set_property(TARGET iniparser PROPERTY
+  INTERFACE_iniparser_MAJOR_VERSION 3)
+set_property(TARGET iniparser APPEND PROPERTY
+  COMPATIBLE_INTERFACE_STRING iniparser_MAJOR_VERSION
+)
+
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/iniparserConfigVersion.cmake"
+  VERSION "${version}"
+  COMPATIBILITY AnyNewerVersion
+)
+
+install(TARGETS iniparser
+        EXPORT iniparserTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(FILES src/iniparser.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/iniparser
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/iniparserConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/iniparserConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/iniparser
+)
+
+install(EXPORT iniparserTargets
+        FILE iniparserTargets.cmake
+        NAMESPACE iniparser::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/iniparser
+)
+
+export(EXPORT iniparserTargets
+       FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/iniparserTargets.cmake"
+       NAMESPACE iniparser::
+)
